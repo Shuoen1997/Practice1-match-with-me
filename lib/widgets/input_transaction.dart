@@ -42,7 +42,7 @@ class _InputTransactionState extends State<InputTransaction> {
               ),
               MyTextField(
                 currentCategoryColor: _currentCategoryColor,
-                textEditingController: titleController,
+                textEditingController: amountController,
                 icon: Icon(Icons.attach_money),
                 hint: 'Enter Transaction amount...',
                 isNumericInput: true,
