@@ -23,7 +23,7 @@ class ListTransactions extends StatelessWidget {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  '\$${transactions[index].amount}',
+                  '\$${transactions[index].amount.toStringAsFixed(2)}',
                   style: TextStyle(fontStyle: FontStyle.italic),
                 ),
                 trailing:

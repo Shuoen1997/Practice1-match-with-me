@@ -18,6 +18,18 @@ class _InputTransactionState extends State<InputTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
+  void submitData() {
+    String submittedTitle = titleController.text;
+    double submittedAmount = double.parse(amountController.text);
+
+    widget.addTx(submittedTitle, submittedAmount, _categoryInput);
+    amountController.clear();
+    titleController.clear();
+    _categoryInput = originalCategoryInput;
+    // Hide the keyboard upon completing the editing
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     Color _currentCategoryColor = Transaction.typeToColor(_categoryInput);
@@ -72,10 +84,10 @@ class _InputTransactionState extends State<InputTransaction> {
                       ),
                     );
                   }).toList()),
-              // Use the SizedBox to set width to infinity so its width can match the parent 
+              // Use the SizedBox to set width to infinity so its width can match the parent
               SizedBox(
                 width: double.infinity,
-                // Outline button to match the style of the transaction records 
+                // Outline button to match the style of the transaction records
                 child: OutlineButton(
                     child: Text(
                       'Add transactions',
@@ -83,18 +95,9 @@ class _InputTransactionState extends State<InputTransaction> {
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     borderSide: BorderSide(color: _currentCategoryColor),
-                    onPressed: () {
-                      // Reset the input fields 
-                      widget.addTx(titleController.text,
-                          double.parse(amountController.text), _categoryInput);
-                      amountController.clear();
-                      titleController.clear();
-                      _categoryInput = originalCategoryInput;
-                      // Hide the keyboard upon completing the editing 
-                      FocusScope.of(context).unfocus();
-                    }),
+                    onPressed: submitData,
               )
-            ],
+              )],
           ),
         ),
       ),

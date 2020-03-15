@@ -19,7 +19,7 @@ class _UserTransactionsState extends State<UserTransactions> {
         date: DateTime.now(),
         type: typeTx);
 
-    FocusScope.of(context).unfocus();
+    
 
     setState(() {
       _transactions.insert(0, tx);
