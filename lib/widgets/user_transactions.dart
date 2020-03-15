@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:practice1/widgets/input_transaction.dart';
 import 'package:practice1/widgets/list_transactions.dart';
 import '../models/transaction.dart';
-
 
 class UserTransactions extends StatefulWidget {
   @override
@@ -20,20 +18,23 @@ class _UserTransactionsState extends State<UserTransactions> {
         amount: amountTx,
         date: DateTime.now(),
         type: typeTx);
-    
+
     FocusScope.of(context).unfocus();
 
     setState(() {
       _transactions.insert(0, tx);
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      InputTransaction( addTx: _addTransactions),
-      ListTransactions(transactions: _transactions,) 
-    ],);
+    return Column(
+      children: <Widget>[
+        InputTransaction(addTx: _addTransactions),
+        ListTransactions(
+          transactions: _transactions,
+        )
+      ],
+    );
   }
 }

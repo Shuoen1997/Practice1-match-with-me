@@ -15,8 +15,8 @@ void main() => runApp(MyCoolApp());
 ThemeData myAppTheme() {
   return ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Colors.cyanAccent[100],
-      accentColor: Colors.yellow[700]);
+      primaryColor: Colors.blueGrey,
+      accentColor: Colors.yellow );
 }
 
 class MyCoolApp extends StatefulWidget {

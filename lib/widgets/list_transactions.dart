@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import './input_transaction.dart';
 import '../models/transaction.dart';
-import './user_transactions.dart';
 import 'package:intl/intl.dart';
 
 class ListTransactions extends StatelessWidget {
-
   final List<Transaction> transactions;
 
-  ListTransactions({this.transactions}); 
+  ListTransactions({this.transactions});
 
   @override
   Widget build(BuildContext context) {
-
-  
     return Container(
       height: 500,
       child: ListView.builder(
