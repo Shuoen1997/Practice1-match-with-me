@@ -19,8 +19,6 @@ class _UserTransactionsState extends State<UserTransactions> {
         date: DateTime.now(),
         type: typeTx);
 
-    
-
     setState(() {
       _transactions.insert(0, tx);
     });

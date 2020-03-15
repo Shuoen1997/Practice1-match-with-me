@@ -54,7 +54,7 @@ class Transaction {
     Color color;
     switch (type) {
       case Category.Clothes:
-        color = Colors.pink[300];
+        color = Colors.amber[300];
         break;
       case Category.Entertainment:
         color = Colors.blue[300];

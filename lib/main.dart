@@ -15,8 +15,7 @@ void main() => runApp(MyCoolApp());
 ThemeData myAppTheme() {
   return ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Colors.blueGrey,
-      accentColor: Colors.yellow);
+      primarySwatch: Colors.blueGrey);
 }
 
 class MyCoolApp extends StatefulWidget {
@@ -48,5 +47,6 @@ class _MyCoolAppState extends State<MyCoolApp> {
               onTap: () => FocusScope.of(context).unfocus(),
               child: SingleChildScrollView(child: UserTransactions()),
             )));
+            
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:practice1/models/transaction.dart';
 import 'custom_textfield.dart';
@@ -18,9 +19,21 @@ class _InputTransactionState extends State<InputTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
+  bool isInputFieldVisible = false;
+
   void submitData() {
     String submittedTitle = titleController.text;
-    double submittedAmount = double.parse(amountController.text);
+    double submittedAmount = -0.01;
+    if (amountController.text.isNotEmpty) {
+      submittedAmount = double.parse(amountController.text);
+    } else {
+      print('cannot be negative!');
+    }
+
+    if (submittedTitle.isEmpty || submittedAmount.isNegative) {
+      // Do some validation check 
+      return;
+    }
 
     widget.addTx(submittedTitle, submittedAmount, _categoryInput);
     amountController.clear();
@@ -28,6 +41,9 @@ class _InputTransactionState extends State<InputTransaction> {
     _categoryInput = originalCategoryInput;
     // Hide the keyboard upon completing the editing
     FocusScope.of(context).unfocus();
+    setState(() {
+      isInputFieldVisible = false;
+    });
   }
 
   @override
@@ -35,69 +51,110 @@ class _InputTransactionState extends State<InputTransaction> {
     Color _currentCategoryColor = Transaction.typeToColor(_categoryInput);
     return Container(
       child: Card(
-        margin: EdgeInsets.all(20),
+        margin: EdgeInsets.all(10),
         elevation: 15,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            side: BorderSide(color: _currentCategoryColor)),
+            side: isInputFieldVisible
+                ? BorderSide(color: _currentCategoryColor)
+                : BorderSide(color: Colors.black)),
         child: Container(
           padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              MyTextField(
-                currentCategoryColor: _currentCategoryColor,
-                textEditingController: titleController,
-                icon: Icon(Icons.grade),
-                hint: 'Enter Transaction title...',
-                isNumericInput: false,
+              Visibility(
+                child: MyTextField(
+                  currentCategoryColor: _currentCategoryColor,
+                  textEditingController: titleController,
+                  icon: Icon(Icons.grade),
+                  hint: 'Enter Transaction title...',
+                  isNumericInput: false,
+                ),
+                visible: isInputFieldVisible,
               ),
-              MyTextField(
-                currentCategoryColor: _currentCategoryColor,
-                textEditingController: amountController,
-                icon: Icon(Icons.attach_money),
-                hint: 'Enter Transaction amount...',
-                isNumericInput: true,
+              Visibility(
+                child: MyTextField(
+                  currentCategoryColor: _currentCategoryColor,
+                  textEditingController: amountController,
+                  icon: Icon(Icons.attach_money),
+                  hint: 'Enter Transaction amount...',
+                  isNumericInput: true,
+                ),
+                visible: isInputFieldVisible,
               ),
-              DropdownButton(
-                  value: _categoryInput,
-                  onChanged: (Category newvalue) {
-                    setState(() {
-                      _categoryInput = newvalue;
-                    });
-                  },
-                  items: Category.values
-                      .map<DropdownMenuItem<Category>>((Category category) {
-                    return DropdownMenuItem<Category>(
-                      value: category,
-                      child: Row(
-                        children: <Widget>[
-                          Transaction.typeToIcon(category, 24),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Text(
-                            category.toString().split('.').last,
-                            textAlign: TextAlign.start,
-                          )
-                        ],
-                      ),
-                    );
-                  }).toList()),
+              Visibility(
+                child: DropdownButton(
+                    value: _categoryInput,
+                    onChanged: (Category newvalue) {
+                      setState(() {
+                        _categoryInput = newvalue;
+                      });
+                    },
+                    items: Category.values
+                        .map<DropdownMenuItem<Category>>((Category category) {
+                      return DropdownMenuItem<Category>(
+                        value: category,
+                        child: Row(
+                          children: <Widget>[
+                            Transaction.typeToIcon(category, 24),
+                            SizedBox(
+                              width: 16,
+                            ),
+                            Text(
+                              category.toString().split('.').last,
+                              textAlign: TextAlign.start,
+                            )
+                          ],
+                        ),
+                      );
+                    }).toList()),
+                visible: isInputFieldVisible,
+              ),
               // Use the SizedBox to set width to infinity so its width can match the parent
               SizedBox(
-                width: double.infinity,
-                // Outline button to match the style of the transaction records
-                child: OutlineButton(
-                    child: Text(
-                      'Add transactions',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    borderSide: BorderSide(color: _currentCategoryColor),
-                    onPressed: submitData,
-              )
-              )],
+                  width: double.infinity,
+                  // Outline button to match the style of the transaction records
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Text(
+                            'Add Transaction',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          borderSide: BorderSide(color: _currentCategoryColor),
+                          onPressed: isInputFieldVisible
+                              ? submitData
+                              : () {
+                                  setState(() {
+                                    isInputFieldVisible = true;
+                                  });
+                                },
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      Visibility(
+                        child: OutlineButton(
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          borderSide: BorderSide(color: Theme.of(context).primaryColorLight),
+                          onPressed: () {
+                            setState(() {
+                              isInputFieldVisible = false;
+                            });
+                          },
+                        ),
+                      visible: isInputFieldVisible,)
+                    ],
+                  ))
+            ],
           ),
         ),
       ),
