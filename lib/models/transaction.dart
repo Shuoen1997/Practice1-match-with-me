@@ -18,9 +18,16 @@ class Transaction {
       @required this.type});
 
   Icon get iconOfType {
-    double sizeOfIcon = 36;
+    return typeToIcon(type, 36);
+  }
+
+  Color get colorOfType {
+    return typeToColor(this.type);
+  }
+
+  static Icon typeToIcon(Category type, double sizeOfIcon){
     Icon icon;
-    switch (this.type) {
+    switch (type) {
       case Category.Clothes:
         icon = Icon(
           Icons.add_shopping_cart,
@@ -43,10 +50,6 @@ class Transaction {
     return icon;
   }
 
-  Color get colorOfType {
-    return typeToColor(this.type);
-  }
-
   static Color typeToColor(Category type) {
     Color color;
     switch (type) {
@@ -60,7 +63,7 @@ class Transaction {
         color = Colors.purple[300];
         break;
       case Category.Transportation:
-        color = Colors.yellow[300];
+        color = Colors.orange[300];
         break;
       case Category.Other:
         color = Colors.cyan[300];
