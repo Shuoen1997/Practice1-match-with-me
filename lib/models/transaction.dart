@@ -1,13 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-enum Category{
-  Entertainment,
-  Food,
-  Clothes,
-  Transportation,
-  Other 
-}
+enum Category { Entertainment, Food, Clothes, Transportation, Other }
 
 class Transaction {
   final String id;
@@ -16,19 +10,23 @@ class Transaction {
   final DateTime date;
   final Category type;
 
-  
+  Transaction(
+      {@required this.id,
+      @required this.title,
+      @required this.amount,
+      @required this.date,
+      @required this.type});
 
-  
-
-  Transaction({@required this.id, @required this.title, @required this.amount, @required this.date, @required this.type});
-
-  Icon get iconOfType{
+  Icon get iconOfType {
     double sizeOfIcon = 36;
     Icon icon;
-    switch(this.type){
+    switch (this.type) {
       case Category.Clothes:
-        icon = Icon(Icons.add_shopping_cart, size: sizeOfIcon,);
-      break;
+        icon = Icon(
+          Icons.add_shopping_cart,
+          size: sizeOfIcon,
+        );
+        break;
       case Category.Entertainment:
         icon = Icon(Icons.music_note, size: sizeOfIcon);
         break;
@@ -45,13 +43,16 @@ class Transaction {
     return icon;
   }
 
-  Color get colorOfType{
+  Color get colorOfType {
+    return typeToColor(this.type);
+  }
 
+  static Color typeToColor(Category type) {
     Color color;
-    switch(this.type){
+    switch (type) {
       case Category.Clothes:
         color = Colors.pink[300];
-      break;
+        break;
       case Category.Entertainment:
         color = Colors.blue[300];
         break;
@@ -66,10 +67,5 @@ class Transaction {
         break;
     }
     return color;
-
   }
-
-
-
-
 }
