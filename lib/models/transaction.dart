@@ -16,13 +16,23 @@ class Transaction {
       @required this.amount,
       @required this.date,
       @required this.type});
+  
+  String get stringOfType {
+    return typeToString(this.type);
+  }
 
   Icon get iconOfType {
-    return typeToIcon(type, 36);
+    return typeToIcon(this.type, 36);
   }
 
   Color get colorOfType {
     return typeToColor(this.type);
+  }
+
+  static String typeToString(Category type){
+
+    return type.toString().split('.').last;
+
   }
 
   static Icon typeToIcon(Category type, double sizeOfIcon) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:practice1/widgets/input_transaction.dart';
 import 'package:practice1/widgets/list_transactions.dart';
 import '../models/transaction.dart';
+import 'chart.dart';
 
 class UserTransactions extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _UserTransactionsState extends State<UserTransactions> {
     setState(() {
       _transactions.insert(0, tx);
     });
+
   }
 
   @override
