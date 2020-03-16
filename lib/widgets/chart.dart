@@ -6,7 +6,7 @@ class MyChart extends StatelessWidget {
 
   MyChart({this.transactions});
 
-  Map<String, double> generateChartBasedOnTransaction() {
+  Map<String, double> _generateChartBasedOnTransaction() {
     Map<String, double> chartMap = Map.fromIterable(Category.values,
         key: (item) => Transaction.typeToString(item), value: (item) => 0.00);
 
@@ -21,5 +21,36 @@ class MyChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var chartMap = _generateChartBasedOnTransaction();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        ...Category.values.map((ct) {
+          var spentAmountForCategory = chartMap[Transaction.typeToString(ct)];
+          bool exceedLimit = spentAmountForCategory > 1000; 
+          return Column(
+            children: <Widget>[
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                '\$' + spentAmountForCategory.toString(),
+                style: TextStyle(
+                  fontWeight: exceedLimit ? FontWeight.bold : FontWeight.normal,
+                    color: exceedLimit
+                        ? Colors.red
+                        : Transaction.typeToColor(ct)),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                child: Transaction.typeToIcon(ct, 36),
+              )
+            ],
+          );
+        }).toList()
+      ],
+    );
   }
 }

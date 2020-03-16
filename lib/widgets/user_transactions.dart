@@ -31,6 +31,7 @@ class _UserTransactionsState extends State<UserTransactions> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        MyChart(transactions: _transactions,),
         InputTransaction(addTx: _addTransactions),
         _transactions.length == 0
             ? Column(
