@@ -21,6 +21,12 @@ class _InputTransactionState extends State<InputTransaction> {
 
   bool isInputFieldVisible = false;
 
+  void resetInputs(){
+    amountController.clear();
+    titleController.clear();
+    _categoryInput = originalCategoryInput;
+  }
+
   void submitData() {
     String submittedTitle = titleController.text;
     double submittedAmount = -0.01;
@@ -36,9 +42,7 @@ class _InputTransactionState extends State<InputTransaction> {
     }
 
     widget.addTx(submittedTitle, submittedAmount, _categoryInput);
-    amountController.clear();
-    titleController.clear();
-    _categoryInput = originalCategoryInput;
+    resetInputs();
     // Hide the keyboard upon completing the editing
     FocusScope.of(context).unfocus();
     setState(() {
@@ -67,7 +71,7 @@ class _InputTransactionState extends State<InputTransaction> {
                 child: MyTextField(
                   currentCategoryColor: _currentCategoryColor,
                   textEditingController: titleController,
-                  icon: Icon(Icons.grade),
+                  icon: Icon(Icons.local_offer),
                   hint: 'Enter Transaction title...',
                   isNumericInput: false,
                 ),
@@ -77,7 +81,7 @@ class _InputTransactionState extends State<InputTransaction> {
                 child: MyTextField(
                   currentCategoryColor: _currentCategoryColor,
                   textEditingController: amountController,
-                  icon: Icon(Icons.attach_money),
+                  icon: Icon(Icons.local_atm),
                   hint: 'Enter Transaction amount...',
                   isNumericInput: true,
                 ),
@@ -146,6 +150,7 @@ class _InputTransactionState extends State<InputTransaction> {
                           ),
                           borderSide: BorderSide(color: Theme.of(context).primaryColorLight),
                           onPressed: () {
+                            resetInputs();
                             setState(() {
                               isInputFieldVisible = false;
                             });

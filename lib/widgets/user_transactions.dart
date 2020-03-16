@@ -9,6 +9,7 @@ class UserTransactions extends StatefulWidget {
 }
 
 class _UserTransactionsState extends State<UserTransactions> {
+  static const AssetImage babyMilo = AssetImage('assets/images/babyMilo.png');
   final List<Transaction> _transactions = [];
 
   void _addTransactions(String titleTx, double amountTx, Category typeTx) {
@@ -29,9 +30,30 @@ class _UserTransactionsState extends State<UserTransactions> {
     return Column(
       children: <Widget>[
         InputTransaction(addTx: _addTransactions),
-        ListTransactions(
-          transactions: _transactions,
-        )
+        _transactions.length == 0
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                      padding: EdgeInsets.only(top: 150),
+                      child: Opacity(
+                        opacity: 0.5,
+                        child: Image(
+                            image: babyMilo,
+                            fit: BoxFit.fill),
+                      )),
+                  Text(
+                    'No transactions...ZZZzzz',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Theme.of(context).primaryColor),
+                  ),
+                ],
+              )
+            : ListTransactions(
+                transactions: _transactions,
+              )
       ],
     );
   }

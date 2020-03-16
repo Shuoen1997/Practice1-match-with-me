@@ -25,26 +25,26 @@ class Transaction {
     return typeToColor(this.type);
   }
 
-  static Icon typeToIcon(Category type, double sizeOfIcon){
+  static Icon typeToIcon(Category type, double sizeOfIcon) {
     Icon icon;
     switch (type) {
       case Category.Clothes:
         icon = Icon(
-          Icons.add_shopping_cart,
+          Icons.loyalty,
           size: sizeOfIcon,
         );
         break;
       case Category.Entertainment:
-        icon = Icon(Icons.music_note, size: sizeOfIcon);
+        icon = Icon(Icons.local_play, size: sizeOfIcon);
         break;
       case Category.Food:
-        icon = Icon(Icons.fastfood, size: sizeOfIcon);
+        icon = Icon(Icons.restaurant, size: sizeOfIcon);
         break;
       case Category.Transportation:
-        icon = Icon(Icons.subway, size: sizeOfIcon);
+        icon = Icon(Icons.local_gas_station, size: sizeOfIcon);
         break;
       case Category.Other:
-        icon = Icon(Icons.wifi_tethering, size: sizeOfIcon);
+        icon = Icon(Icons.create, size: sizeOfIcon);
         break;
     }
     return icon;
@@ -54,7 +54,7 @@ class Transaction {
     Color color;
     switch (type) {
       case Category.Clothes:
-        color = Colors.amber[300];
+        color = Colors.green[300];
         break;
       case Category.Entertainment:
         color = Colors.blue[300];
@@ -66,7 +66,7 @@ class Transaction {
         color = Colors.orange[300];
         break;
       case Category.Other:
-        color = Colors.cyan[300];
+        color = Colors.white;
         break;
     }
     return color;
