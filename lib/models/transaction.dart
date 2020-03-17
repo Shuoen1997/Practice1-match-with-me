@@ -10,6 +10,8 @@ class Transaction {
   final DateTime date;
   final Category type;
 
+  static const double maxSpending = 100; 
+
   Transaction(
       {@required this.id,
       @required this.title,
@@ -64,19 +66,19 @@ class Transaction {
     Color color;
     switch (type) {
       case Category.Clothes:
-        color = Colors.green[300];
+        color = Colors.lightBlue[300];
         break;
       case Category.Entertainment:
-        color = Colors.blue[300];
+        color = Colors.teal[300];
         break;
       case Category.Food:
-        color = Colors.purple[300];
+        color = Colors.deepPurple[300];
         break;
       case Category.Transportation:
         color = Colors.orange[300];
         break;
       case Category.Other:
-        color = Colors.white;
+        color = Colors.indigo[300];
         break;
     }
     return color;

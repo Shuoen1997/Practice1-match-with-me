@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/transaction.dart';
 
 class ChartBar extends StatelessWidget {
   final Color color;
@@ -7,7 +8,7 @@ class ChartBar extends StatelessWidget {
   ChartBar({this.color, this.spendingAmount});
 
   double get _spendingMaxPercentage {
-    final _percentage = (spendingAmount / 100);
+    final _percentage = (spendingAmount / Transaction.maxSpending);
     return _percentage > 1 ? 1 : _percentage;
   }
 
@@ -24,7 +25,7 @@ class ChartBar extends StatelessWidget {
           FractionallySizedBox(
             heightFactor: (1 - _spendingMaxPercentage),
             child: Container(
-              decoration: BoxDecoration(color: Colors.blueGrey),
+              decoration: BoxDecoration(color: Colors.blueGrey[300]),
             ),
           )
         ],

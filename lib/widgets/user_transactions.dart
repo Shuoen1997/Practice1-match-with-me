@@ -16,6 +16,9 @@ class _UserTransactionsState extends State<UserTransactions> {
   List<Transaction> get _recentTransactions{
     // This is a very useful syntax where
     // Extract a list from a list based on bool condition 
+
+    // 'Where' returns an iterable, so we have to call 
+    // toList() at the end to turn it into a list
     return _transactions.where((tx){
       return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();

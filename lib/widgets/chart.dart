@@ -28,19 +28,19 @@ class MyChart extends StatelessWidget {
       children: <Widget>[
         ...Category.values.map((ct) {
           var spentAmountForCategory = chartMap[Transaction.typeToString(ct)];
-          bool exceedLimit = spentAmountForCategory > 1000;
+          bool exceedLimit = spentAmountForCategory > Transaction.maxSpending;
           return Column(
             children: <Widget>[
               SizedBox(
                 height: 20,
               ),
               Text(
-                '\$' + spentAmountForCategory.toString(),
+                '\$' + spentAmountForCategory.toStringAsFixed(0),
                 style: TextStyle(
                     fontWeight:
                         exceedLimit ? FontWeight.bold : FontWeight.normal,
                     color:
-                        exceedLimit ? Colors.red : Transaction.typeToColor(ct)),
+                        exceedLimit ? Colors.red[300] : Transaction.typeToColor(ct)),
               ),
               SizedBox(
                 height: 20,

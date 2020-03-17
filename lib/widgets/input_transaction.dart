@@ -61,7 +61,7 @@ class _InputTransactionState extends State<InputTransaction> {
             borderRadius: BorderRadius.all(Radius.circular(20)),
             side: isInputFieldVisible
                 ? BorderSide(color: _currentCategoryColor)
-                : BorderSide(color: Colors.white)),
+                : BorderSide(color: Colors.grey)),
         child: Container(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -129,7 +129,7 @@ class _InputTransactionState extends State<InputTransaction> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          borderSide: BorderSide(color: _currentCategoryColor),
+                          borderSide: isInputFieldVisible ? BorderSide(color: _currentCategoryColor) :  BorderSide(color: Colors.grey),
                           onPressed: isInputFieldVisible
                               ? submitData
                               : () {
