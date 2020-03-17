@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
+import 'chart_bar.dart';
 
 class MyChart extends StatelessWidget {
   final List<Transaction> transactions;
@@ -27,7 +28,7 @@ class MyChart extends StatelessWidget {
       children: <Widget>[
         ...Category.values.map((ct) {
           var spentAmountForCategory = chartMap[Transaction.typeToString(ct)];
-          bool exceedLimit = spentAmountForCategory > 1000; 
+          bool exceedLimit = spentAmountForCategory > 1000;
           return Column(
             children: <Widget>[
               SizedBox(
@@ -36,10 +37,17 @@ class MyChart extends StatelessWidget {
               Text(
                 '\$' + spentAmountForCategory.toString(),
                 style: TextStyle(
-                  fontWeight: exceedLimit ? FontWeight.bold : FontWeight.normal,
-                    color: exceedLimit
-                        ? Colors.red
-                        : Transaction.typeToColor(ct)),
+                    fontWeight:
+                        exceedLimit ? FontWeight.bold : FontWeight.normal,
+                    color:
+                        exceedLimit ? Colors.red : Transaction.typeToColor(ct)),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ChartBar(
+                color: Transaction.typeToColor(ct),
+                spendingAmount: spentAmountForCategory,
               ),
               SizedBox(
                 height: 20,

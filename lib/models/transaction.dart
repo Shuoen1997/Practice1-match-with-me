@@ -54,7 +54,7 @@ class Transaction {
         icon = Icon(Icons.local_gas_station, size: sizeOfIcon);
         break;
       case Category.Other:
-        icon = Icon(Icons.create, size: sizeOfIcon);
+        icon = Icon(Icons.bubble_chart, size: sizeOfIcon);
         break;
     }
     return icon;
