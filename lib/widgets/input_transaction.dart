@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:practice1/models/transaction.dart';
 import 'custom_textfield.dart';
+import 'custom_textstyle.dart';
 import 'package:intl/intl.dart';
 
 class InputTransaction extends StatefulWidget {
@@ -15,13 +16,18 @@ class InputTransaction extends StatefulWidget {
 
 class _InputTransactionState extends State<InputTransaction> {
   static const originalCategoryInput = Category.Other;
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
+  final _enterTransactionHintTxt = 'Enter Transaction amount...';
+  final _addTransactionButtonTxt = 'Add Transaction';
+  final _cancelButtonTxt = 'Cancel';
+  final _confirmButtonTxt = 'Confirm';
   Category _categoryInput = originalCategoryInput;
 
   DateTime _dateTime = DateTime.now();
   bool _isDatePickerVisible = false;
 
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+
 
   bool _isInputFieldVisible = false;
 
@@ -79,7 +85,7 @@ class _InputTransactionState extends State<InputTransaction> {
                   currentCategoryColor: _currentCategoryColor,
                   textEditingController: titleController,
                   icon: Icon(Icons.local_offer),
-                  hint: 'Enter Transaction title...',
+                  hint: _enterTransactionHintTxt,
                   isNumericInput: false,
                 ),
                 visible: _isInputFieldVisible,
@@ -89,7 +95,7 @@ class _InputTransactionState extends State<InputTransaction> {
                   currentCategoryColor: _currentCategoryColor,
                   textEditingController: amountController,
                   icon: Icon(Icons.local_atm),
-                  hint: 'Enter Transaction amount...',
+                  hint: _enterTransactionHintTxt,
                   isNumericInput: true,
                 ),
                 visible: _isInputFieldVisible,
@@ -146,11 +152,9 @@ class _InputTransactionState extends State<InputTransaction> {
                     children: <Widget>[
                       Expanded(
                         child: OutlineButton(
-                          child: Text(
-                            'Add Transaction',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                          child: MyTextStyle(
+                            _addTransactionButtonTxt,
+                            
                           ),
                           borderSide: _isInputFieldVisible
                               ? BorderSide(color: _currentCategoryColor)
@@ -169,11 +173,9 @@ class _InputTransactionState extends State<InputTransaction> {
                       ),
                       Visibility(
                         child: OutlineButton(
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                          child: MyTextStyle(
+                            _cancelButtonTxt,
+                            
                           ),
                           borderSide: BorderSide(
                               color: Theme.of(context).primaryColorLight),
@@ -208,6 +210,7 @@ class _InputTransactionState extends State<InputTransaction> {
                     SizedBox(
                       height: 50,
                       child: OutlineButton(
+                        child: MyTextStyle(_confirmButtonTxt),
                         onPressed: () {
                           setState(() {
                             _isDatePickerVisible = false;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:practice1/widgets/input_transaction.dart';
-import 'package:practice1/widgets/list_transactions.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +13,7 @@ class UserTransactions extends StatefulWidget {
 
 class _UserTransactionsState extends State<UserTransactions> {
   static const AssetImage babyMilo = AssetImage('assets/images/babyMilo.png');
+  final _noTransactionTxt = "No _transactions...ZZZzzz";
   final List<Transaction> _transactions = [];
 
   Future<void> showDeleteDialog(BuildContext context, int transactionIndex) async {
@@ -86,7 +86,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                         child: Image(image: babyMilo, fit: BoxFit.fill),
                       )),
                   Text(
-                    'No _transactions...ZZZzzz',
+                    _noTransactionTxt,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
