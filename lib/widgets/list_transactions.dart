@@ -15,20 +15,17 @@ class ListTransactions extends StatelessWidget {
         itemCount: transactions.length,
         itemBuilder: (context, index) {
           return Card(
-            child: Container(
-              child: ListTile(
-                leading: transactions[index].iconOfType,
-                title: Text(
-                  transactions[index].title.toString(),
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  '\$${transactions[index].amount.toStringAsFixed(2)}',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-                trailing:
-                    Text(DateFormat.yMd().format(transactions[index].date)),
+            child: ListTile(
+              leading: transactions[index].iconOfType,
+              title: Text(
+                transactions[index].title.toString(),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
+              subtitle: Text(
+                '\$${transactions[index].amount.toStringAsFixed(2)}',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              trailing: Text(DateFormat.yMd().format(transactions[index].date)),
             ),
             elevation: 15,
             shape: RoundedRectangleBorder(

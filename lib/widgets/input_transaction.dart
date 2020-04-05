@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:practice1/models/transaction.dart';
 import 'custom_textfield.dart';
+import 'package:intl/intl.dart';
 
 class InputTransaction extends StatefulWidget {
   final Function addTx;
@@ -16,15 +17,20 @@ class _InputTransactionState extends State<InputTransaction> {
   static const originalCategoryInput = Category.Other;
   Category _categoryInput = originalCategoryInput;
 
+  DateTime _dateTime = DateTime.now();
+  bool _isDatePickerVisible = false;
+
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
-  bool isInputFieldVisible = false;
+  bool _isInputFieldVisible = false;
 
-  void resetInputs(){
+  void resetInputs() {
     amountController.clear();
     titleController.clear();
     _categoryInput = originalCategoryInput;
+    _isInputFieldVisible = false;
+    _isDatePickerVisible = false;
   }
 
   void submitData() {
@@ -37,16 +43,17 @@ class _InputTransactionState extends State<InputTransaction> {
     }
 
     if (submittedTitle.isEmpty || submittedAmount.isNegative) {
-      // Do some validation check 
+      // Do some validation check
       return;
     }
 
-    widget.addTx(submittedTitle, submittedAmount, _categoryInput);
+    widget.addTx(submittedTitle, submittedAmount, _categoryInput, _dateTime);
     resetInputs();
     // Hide the keyboard upon completing the editing
     FocusScope.of(context).unfocus();
     setState(() {
-      isInputFieldVisible = false;
+      _isInputFieldVisible = false;
+      _isDatePickerVisible = false;
     });
   }
 
@@ -59,7 +66,7 @@ class _InputTransactionState extends State<InputTransaction> {
         elevation: 15,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            side: isInputFieldVisible
+            side: _isInputFieldVisible
                 ? BorderSide(color: _currentCategoryColor)
                 : BorderSide(color: Colors.grey)),
         child: Container(
@@ -75,7 +82,7 @@ class _InputTransactionState extends State<InputTransaction> {
                   hint: 'Enter Transaction title...',
                   isNumericInput: false,
                 ),
-                visible: isInputFieldVisible,
+                visible: _isInputFieldVisible,
               ),
               Visibility(
                 child: MyTextField(
@@ -85,36 +92,52 @@ class _InputTransactionState extends State<InputTransaction> {
                   hint: 'Enter Transaction amount...',
                   isNumericInput: true,
                 ),
-                visible: isInputFieldVisible,
+                visible: _isInputFieldVisible,
               ),
-              Visibility(
-                child: DropdownButton(
-                    value: _categoryInput,
-                    onChanged: (Category newvalue) {
-                      setState(() {
-                        _categoryInput = newvalue;
-                      });
-                    },
-                    items: Category.values
-                        .map<DropdownMenuItem<Category>>((Category category) {
-                      return DropdownMenuItem<Category>(
-                        value: category,
-                        child: Row(
-                          children: <Widget>[
-                            Transaction.typeToIcon(category, 24),
-                            SizedBox(
-                              width: 16,
+              Row(
+                children: <Widget>[
+                  Visibility(
+                    child: DropdownButton(
+                        value: _categoryInput,
+                        onChanged: (Category newvalue) {
+                          setState(() {
+                            _categoryInput = newvalue;
+                          });
+                        },
+                        items: Category.values.map<DropdownMenuItem<Category>>(
+                            (Category category) {
+                          return DropdownMenuItem<Category>(
+                            value: category,
+                            child: Row(
+                              children: <Widget>[
+                                Transaction.typeToIcon(category, 24),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Text(
+                                  category.toString().split('.').last,
+                                  textAlign: TextAlign.start,
+                                )
+                              ],
                             ),
-                            Text(
-                              category.toString().split('.').last,
-                              textAlign: TextAlign.start,
-                            )
-                          ],
-                        ),
-                      );
-                    }).toList()),
-                visible: isInputFieldVisible,
+                          );
+                        }).toList()),
+                    visible: _isInputFieldVisible,
+                  ),
+                  Visibility(
+                    visible: _isInputFieldVisible,
+                    child: OutlineButton(
+                      child: Text(DateFormat.yMd().format(_dateTime)),
+                      onPressed: () {
+                        setState(() {
+                          _isDatePickerVisible = true;
+                        });
+                      },
+                    ),
+                  )
+                ],
               ),
+
               // Use the SizedBox to set width to infinity so its width can match the parent
               SizedBox(
                   width: double.infinity,
@@ -129,17 +152,21 @@ class _InputTransactionState extends State<InputTransaction> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          borderSide: isInputFieldVisible ? BorderSide(color: _currentCategoryColor) :  BorderSide(color: Colors.grey),
-                          onPressed: isInputFieldVisible
+                          borderSide: _isInputFieldVisible
+                              ? BorderSide(color: _currentCategoryColor)
+                              : BorderSide(color: Colors.grey),
+                          onPressed: _isInputFieldVisible
                               ? submitData
                               : () {
                                   setState(() {
-                                    isInputFieldVisible = true;
+                                    _isInputFieldVisible = true;
                                   });
                                 },
                         ),
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Visibility(
                         child: OutlineButton(
                           child: Text(
@@ -148,17 +175,49 @@ class _InputTransactionState extends State<InputTransaction> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          borderSide: BorderSide(color: Theme.of(context).primaryColorLight),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight),
                           onPressed: () {
-                            resetInputs();
                             setState(() {
-                              isInputFieldVisible = false;
+                              resetInputs();
                             });
+                          
+                            
                           },
                         ),
-                      visible: isInputFieldVisible,)
+                        visible: _isInputFieldVisible,
+                      )
                     ],
-                  ))
+                  )),
+              Visibility(
+                visible: _isDatePickerVisible && _isInputFieldVisible,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 100,
+                      child: CupertinoDatePicker(
+                        initialDateTime: _dateTime,
+                        mode: CupertinoDatePickerMode.date,
+                        onDateTimeChanged: (dateTime) {
+                          setState(() {
+                            _dateTime = dateTime;
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                      child: OutlineButton(
+                        onPressed: () {
+                          setState(() {
+                            _isDatePickerVisible = false;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
