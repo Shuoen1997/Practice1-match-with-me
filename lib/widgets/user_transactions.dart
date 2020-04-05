@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:practice1/widgets/input_transaction.dart';
 import 'package:practice1/widgets/list_transactions.dart';
 import '../models/transaction.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'chart.dart';
 
 class UserTransactions extends StatefulWidget {
@@ -12,6 +15,32 @@ class UserTransactions extends StatefulWidget {
 class _UserTransactionsState extends State<UserTransactions> {
   static const AssetImage babyMilo = AssetImage('assets/images/babyMilo.png');
   final List<Transaction> _transactions = [];
+
+  Future<void> showDeleteDialog(BuildContext context, int transactionIndex) async {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: Text("Delete Transaction"),
+              content: Text("Are you sure you want to delete?"),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text("DELETE"),
+                  onPressed: () {
+                    print("DELETED!");
+                    setState(() {
+                      _transactions.removeAt(transactionIndex);
+                      Navigator.of(context).pop();
+                    });
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text("CANCEL"),
+                  onPressed: ()=>Navigator.of(context).pop(),
+                )
+              ],
+            ));
+  }
 
   List<Transaction> get _recentTransactions {
     // This is a very useful syntax where
@@ -24,7 +53,8 @@ class _UserTransactionsState extends State<UserTransactions> {
     }).toList();
   }
 
-  void _addTransactions(String titleTx, double amountTx, Category typeTx, DateTime dateTx) {
+  void _addTransactions(
+      String titleTx, double amountTx, Category typeTx, DateTime dateTx) {
     final tx = Transaction(
         id: DateTime.now().toString(),
         title: titleTx,
@@ -56,7 +86,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                         child: Image(image: babyMilo, fit: BoxFit.fill),
                       )),
                   Text(
-                    'No transactions...ZZZzzz',
+                    'No _transactions...ZZZzzz',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -64,8 +94,36 @@ class _UserTransactionsState extends State<UserTransactions> {
                   ),
                 ],
               )
-            : ListTransactions(
-                transactions: _transactions,
+            : Container(
+                height: 500,
+                child: ListView.builder(
+                  itemCount: _transactions.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ListTile(
+                        onLongPress: () => showDeleteDialog(context, index),
+                        leading: _transactions[index].iconOfType,
+                        title: Text(
+                          _transactions[index].title.toString(),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          '\$${_transactions[index].amount.toStringAsFixed(2)}',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                        trailing: Text(
+                            DateFormat.yMd().format(_transactions[index].date)),
+                      ),
+                      elevation: 15,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          side: BorderSide(
+                              color: _transactions[index].colorOfType)),
+                      margin: EdgeInsets.all(10),
+                    );
+                  },
+                ),
               )
       ],
     );
