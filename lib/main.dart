@@ -14,7 +14,7 @@ void main() => runApp(MyCoolApp());
 
 ThemeData myAppTheme() {
   return ThemeData(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primarySwatch: Colors.orange);
 }
 

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'chart.dart';
+import 'package:practice1/constant.dart' as constant;
 
 class UserTransactions extends StatefulWidget {
   @override
@@ -13,21 +14,20 @@ class UserTransactions extends StatefulWidget {
 
 class _UserTransactionsState extends State<UserTransactions> {
   static const AssetImage babyMilo = AssetImage('assets/images/babyMilo.png');
-  final _noTransactionTxt = "No _transactions...ZZZzzz";
   final List<Transaction> _transactions = [];
 
-  Future<void> showDeleteDialog(BuildContext context, int transactionIndex) async {
+  Future<void> showDeleteDialog(
+      BuildContext context, int transactionIndex) async {
     return showDialog(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text("Delete Transaction"),
-              content: Text("Are you sure you want to delete?"),
+              title: Text(constant.DELETE_TX_TITLE_TXT),
+              content: Text(constant.ARE_YOU_SURE_DELETE_TXT),
               actions: <Widget>[
                 CupertinoDialogAction(
-                  child: Text("DELETE"),
+                  child: Text(constant.DELETE_BUTTON),
                   onPressed: () {
-                    print("DELETED!");
                     setState(() {
                       _transactions.removeAt(transactionIndex);
                       Navigator.of(context).pop();
@@ -35,8 +35,8 @@ class _UserTransactionsState extends State<UserTransactions> {
                   },
                 ),
                 CupertinoDialogAction(
-                  child: Text("CANCEL"),
-                  onPressed: ()=>Navigator.of(context).pop(),
+                  child: Text(constant.CANCEL_BUTTON),
+                  onPressed: () => Navigator.of(context).pop(),
                 )
               ],
             ));
@@ -83,10 +83,13 @@ class _UserTransactionsState extends State<UserTransactions> {
                       padding: EdgeInsets.only(top: 150),
                       child: Opacity(
                         opacity: 0.5,
-                        child: Image(image: babyMilo, fit: BoxFit.fill),
+                        child: Image(
+                            key: Key('babyMiloImage'),
+                            image: babyMilo,
+                            fit: BoxFit.fill),
                       )),
                   Text(
-                    _noTransactionTxt,
+                    constant.DEFAULT_NO_TRANSACTION_TXT,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -95,11 +98,12 @@ class _UserTransactionsState extends State<UserTransactions> {
                 ],
               )
             : Container(
-                height: 500,
+              height: 500,
                 child: ListView.builder(
                   itemCount: _transactions.length,
                   itemBuilder: (context, index) {
                     return Card(
+                      key: Key('transaction' + index.toString()),
                       child: ListTile(
                         onLongPress: () => showDeleteDialog(context, index),
                         leading: _transactions[index].iconOfType,

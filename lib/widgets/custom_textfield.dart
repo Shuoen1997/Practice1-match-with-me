@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
+  final Key key;
   final Color currentCategoryColor;
   final TextEditingController textEditingController;
   final Icon icon;
   final String hint;
   final bool isNumericInput;
   MyTextField(
-      {this.currentCategoryColor,
+      {
+        @required this.key,
+      this.currentCategoryColor,
       this.textEditingController,
       this.icon,
       this.hint,
@@ -17,7 +20,9 @@ class MyTextField extends StatelessWidget {
     return TextField(
       cursorColor: currentCategoryColor,
       controller: textEditingController,
-      keyboardType: isNumericInput? TextInputType.numberWithOptions(decimal: true):TextInputType.text,
+      keyboardType: isNumericInput
+          ? TextInputType.numberWithOptions(decimal: true)
+          : TextInputType.text,
       decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: currentCategoryColor),

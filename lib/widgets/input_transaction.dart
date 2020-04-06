@@ -4,6 +4,7 @@ import 'package:practice1/models/transaction.dart';
 import 'custom_textfield.dart';
 import 'custom_textstyle.dart';
 import 'package:intl/intl.dart';
+import 'package:practice1/constant.dart' as constant;
 
 class InputTransaction extends StatefulWidget {
   final Function addTx;
@@ -18,20 +19,14 @@ class _InputTransactionState extends State<InputTransaction> {
   static const originalCategoryInput = Category.Other;
   final titleController = TextEditingController();
   final amountController = TextEditingController();
-  final _enterTransactionHintTxt = 'Enter Transaction amount...';
-  final _addTransactionButtonTxt = 'Add Transaction';
-  final _cancelButtonTxt = 'Cancel';
-  final _confirmButtonTxt = 'Confirm';
-  Category _categoryInput = originalCategoryInput;
+  final DateTime _currentDateTime = DateTime.now();
 
-  DateTime _dateTime = DateTime.now();
-  bool _isDatePickerVisible = false;
+  var _categoryInput = originalCategoryInput;
+  var _dateTime = DateTime.now();
+  var _isDatePickerVisible = false;
+  var _isInputFieldVisible = false;
 
-
-
-  bool _isInputFieldVisible = false;
-
-  void resetInputs() {
+  void _resetInputs() {
     amountController.clear();
     titleController.clear();
     _categoryInput = originalCategoryInput;
@@ -54,13 +49,14 @@ class _InputTransactionState extends State<InputTransaction> {
     }
 
     widget.addTx(submittedTitle, submittedAmount, _categoryInput, _dateTime);
-    resetInputs();
+    _resetInputs();
     // Hide the keyboard upon completing the editing
     FocusScope.of(context).unfocus();
     setState(() {
       _isInputFieldVisible = false;
       _isDatePickerVisible = false;
     });
+    print('Data is submitted');
   }
 
   @override
@@ -82,20 +78,22 @@ class _InputTransactionState extends State<InputTransaction> {
             children: <Widget>[
               Visibility(
                 child: MyTextField(
+                  key: Key('title'),
                   currentCategoryColor: _currentCategoryColor,
                   textEditingController: titleController,
                   icon: Icon(Icons.local_offer),
-                  hint: _enterTransactionHintTxt,
+                  hint: constant.TRANSACTION_TITLE_TEXTFIELD,
                   isNumericInput: false,
                 ),
                 visible: _isInputFieldVisible,
               ),
               Visibility(
                 child: MyTextField(
+                  key: Key('amount'),
                   currentCategoryColor: _currentCategoryColor,
                   textEditingController: amountController,
                   icon: Icon(Icons.local_atm),
-                  hint: _enterTransactionHintTxt,
+                  hint: constant.TRANSACTION_AMOUNT_TEXTFIELD,
                   isNumericInput: true,
                 ),
                 visible: _isInputFieldVisible,
@@ -104,6 +102,7 @@ class _InputTransactionState extends State<InputTransaction> {
                 children: <Widget>[
                   Visibility(
                     child: DropdownButton(
+                        key: Key('category'),
                         value: _categoryInput,
                         onChanged: (Category newvalue) {
                           setState(() {
@@ -133,6 +132,7 @@ class _InputTransactionState extends State<InputTransaction> {
                   Visibility(
                     visible: _isInputFieldVisible,
                     child: OutlineButton(
+                      key: Key('datePickerButton'),
                       child: Text(DateFormat.yMd().format(_dateTime)),
                       onPressed: () {
                         setState(() {
@@ -152,9 +152,9 @@ class _InputTransactionState extends State<InputTransaction> {
                     children: <Widget>[
                       Expanded(
                         child: OutlineButton(
+                          key: Key('addTransactionButton'),
                           child: MyTextStyle(
-                            _addTransactionButtonTxt,
-                            
+                            constant.ADD_TRANSACTION_BUTTON,
                           ),
                           borderSide: _isInputFieldVisible
                               ? BorderSide(color: _currentCategoryColor)
@@ -164,6 +164,7 @@ class _InputTransactionState extends State<InputTransaction> {
                               : () {
                                   setState(() {
                                     _isInputFieldVisible = true;
+                                    print('Add Transaction button clicked!');
                                   });
                                 },
                         ),
@@ -174,17 +175,14 @@ class _InputTransactionState extends State<InputTransaction> {
                       Visibility(
                         child: OutlineButton(
                           child: MyTextStyle(
-                            _cancelButtonTxt,
-                            
+                            constant.CANCEL_BUTTON,
                           ),
                           borderSide: BorderSide(
                               color: Theme.of(context).primaryColorLight),
                           onPressed: () {
                             setState(() {
-                              resetInputs();
+                              _resetInputs();
                             });
-                          
-                            
                           },
                         ),
                         visible: _isInputFieldVisible,
@@ -198,6 +196,7 @@ class _InputTransactionState extends State<InputTransaction> {
                     SizedBox(
                       height: 100,
                       child: CupertinoDatePicker(
+                        maximumYear: _currentDateTime.year,
                         initialDateTime: _dateTime,
                         mode: CupertinoDatePickerMode.date,
                         onDateTimeChanged: (dateTime) {
@@ -210,7 +209,8 @@ class _InputTransactionState extends State<InputTransaction> {
                     SizedBox(
                       height: 50,
                       child: OutlineButton(
-                        child: MyTextStyle(_confirmButtonTxt),
+                        key: Key('confirmDatePickerButton'),
+                        child: MyTextStyle(constant.CONFIRM_BUTTON),
                         onPressed: () {
                           setState(() {
                             _isDatePickerVisible = false;
