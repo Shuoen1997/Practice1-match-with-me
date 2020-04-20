@@ -1,13 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/widgets/input_transaction.dart';
 import '../lib/widgets/user_transactions.dart';
-import '../lib/widgets/chart_bar.dart';
-import '../lib/widgets/chart.dart';
-import '../lib/models/transaction.dart';
-
-import 'package:practice1/constant.dart' as constant;
+import '../lib/constant.dart' as constant;
 
 void main() {
   testWidgets('TEST 1: Add transaction to app', (WidgetTester tester) async {
@@ -23,58 +18,60 @@ void main() {
     // And we should expect to see the no transaction txt
     expect(find.text(constant.DEFAULT_NO_TRANSACTION_TXT), findsOneWidget);
 
-    // // And we should expect to see the Baby Milo image rendered
+    // And we should expect to see the Baby Milo image rendered
     expect(find.byKey(Key('babyMiloImage')), findsOneWidget);
 
     // // We click on Add Transactions button
-    await tester.tap(find.byKey(Key('addTransactionButton')));
-    await tester.pumpAndSettle();
+    try{
+      await tester.tap(find.byKey(Key('addTransactionButton')));
+      await tester.pumpAndSettle();
+    }catch (e){
+      print(e.toString());
+    }
+    
+    
 
-    // // And we sould expect to see the Transaction title textfield 
-    // expect(find.byKey(Key('title')), findsOneWidget);
+    // And we sould expect to see the Transaction title textfield 
+    expect(find.byKey(Key('title')), findsOneWidget);
 
-    // // And we should expect to see the Transaction amount textfield
-    // expect(find.byKey(Key('amount')), findsOneWidget);
+    // And we should expect to see the Transaction amount textfield
+    expect(find.byKey(Key('amount')), findsOneWidget);
 
-    // // And we should expect to see the Category dropdown 
-    // expect(find.byKey(Key('category')), findsOneWidget);
+    // And we should expect to see the Category dropdown 
+    expect(find.byKey(Key('categoryDropdownButton')), findsOneWidget);
 
-    // // We enter transaction title 
-    // await tester.enterText(find.byKey(Key('title')), 'Transaction title');
+    // We enter transaction title 
+    await tester.enterText(find.byKey(Key('title')), 'Transaction title');
 
-    // // We enter transaction amount 
-    // await tester.enterText(find.byKey(Key('amount')), '100');
+    // We enter transaction amount 
+    await tester.enterText(find.byKey(Key('amount')), '100');
+
+    //
+    // await tester.tap(find.byKey(Key('categoryDropdownButton')));
 
     // We click on the Date Picker button
-    // await tester.tap(find.byKey(Key('datePickerButton'))); 
-    // await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('datePickerButton'))); 
+    await tester.pumpAndSettle();
     
-    // // And we should expect to see the Cupertino DatePicker  
-    // expect(find.byType(CupertinoDatePicker), findsOneWidget);
+    // And we should expect to see the Cupertino DatePicker  
+    expect(find.byType(CupertinoDatePicker), findsOneWidget);
 
-    // // We click on the Confirm button
-    // await tester.tap(find.byKey(Key('confirmDatePickerButton')));
-    // await tester.pumpAndSettle();
+    // We click on the Confirm button
+    await tester.tap(find.byKey(Key('confirmDatePickerButton')));
+    await tester.pumpAndSettle();
 
-    // // Then we should not see the DatePicker  
-    // expect(find.byType(CupertinoDatePicker), findsNothing);
+    // Then we should not see the DatePicker  
+    expect(find.byType(CupertinoDatePicker), findsNothing);
+    print('find');
 
-    // // We click on Add Transactions button
-    // await tester.tap(find.byKey(Key('addTransactionButton')));
-    // await tester.pumpAndSettle();
-
-    // And we should see the first Transaction item
-    // expect(find.byType(ListTile), findsOneWidget);
-
+    // We click on Add Transactions button
+    await tester.tap(find.byKey(Key('addTransactionButton')));
+    print('Hello, after add transaction');
+    await tester.pumpAndSettle();
+    // expect(tester.takeException(), isInstanceOf<Exception>());
 
 
-    // // Swipe the item to dismiss it.
-    // await tester.drag(find.byType(Dismissible), Offset(500.0, 0.0));
-
-    // // Build the widget until the dismiss animation ends.
-    // await tester.pumpAndSettle();
-
-    // // Ensure that the item is no longer on screen.
-    // expect(find.text('hi'), findsNothing);
+    //And we should see the first Transaction item
+    expect(find.byType(ListTile), findsOneWidget);
   });
 }
