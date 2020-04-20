@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:practice1/models/transaction.dart';
 import 'custom_textfield.dart';
 import 'custom_textstyle.dart';
+import '../models/transaction.dart';
 import 'package:intl/intl.dart';
 import 'package:practice1/constant.dart' as constant;
 
@@ -16,7 +16,7 @@ class InputTransaction extends StatefulWidget {
 }
 
 class _InputTransactionState extends State<InputTransaction> {
-  static const originalCategoryInput = Category.Other;
+  static Category originalCategoryInput = Category.Other;
   final titleController = TextEditingController();
   final amountController = TextEditingController();
   final DateTime _currentDateTime = DateTime.now();
@@ -25,6 +25,7 @@ class _InputTransactionState extends State<InputTransaction> {
   var _dateTime = DateTime.now();
   var _isDatePickerVisible = false;
   var _isInputFieldVisible = false;
+  var _displayError = false;
 
   void _resetInputs() {
     amountController.clear();
@@ -32,35 +33,33 @@ class _InputTransactionState extends State<InputTransaction> {
     _categoryInput = originalCategoryInput;
     _isInputFieldVisible = false;
     _isDatePickerVisible = false;
+    _displayError = false;
+  }
+
+  bool isThisInputValid(TextEditingController tec) {
+    return tec.text.isNotEmpty;
   }
 
   void submitData() {
-    String submittedTitle = titleController.text;
-    double submittedAmount = -0.01;
-    if (amountController.text.isNotEmpty) {
-      submittedAmount = double.parse(amountController.text);
-    } else {
-      print('cannot be negative!');
-    }
-
-    if (submittedTitle.isEmpty || submittedAmount.isNegative) {
-      // Do some validation check
+    if (!isThisInputValid(amountController) ||
+        !isThisInputValid(titleController)) {
+      _displayError = true;
+      setState(() {});
       return;
     }
+    String submittedTitle = titleController.text;
+    double submittedAmount = double.parse(amountController.text);
 
     widget.addTx(submittedTitle, submittedAmount, _categoryInput, _dateTime);
     _resetInputs();
     // Hide the keyboard upon completing the editing
     FocusScope.of(context).unfocus();
-    setState(() {
-      _isInputFieldVisible = false;
-      _isDatePickerVisible = false;
-    });
     print('Data is submitted');
   }
 
   @override
   Widget build(BuildContext context) {
+    print('build again');
     Color _currentCategoryColor = Transaction.typeToColor(_categoryInput);
     return Container(
       child: Card(
@@ -77,32 +76,32 @@ class _InputTransactionState extends State<InputTransaction> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Visibility(
-                child: MyTextField(
-                  key: Key('title'),
-                  currentCategoryColor: _currentCategoryColor,
-                  textEditingController: titleController,
-                  icon: Icon(Icons.local_offer),
-                  hint: constant.TRANSACTION_TITLE_TEXTFIELD,
-                  isNumericInput: false,
-                ),
+                child: MyTextField(key: Key('title'),
+                    currentCategoryColor: _currentCategoryColor,
+                    textEditingController: titleController,
+                    icon: Icon(Icons.face),
+                    hint: constant.TRANSACTION_TITLE_TEXTFIELD,
+                    isNumericInput: false,
+                    displayError: _displayError,
+                    ),
                 visible: _isInputFieldVisible,
               ),
               Visibility(
                 child: MyTextField(
-                  key: Key('amount'),
-                  currentCategoryColor: _currentCategoryColor,
-                  textEditingController: amountController,
-                  icon: Icon(Icons.local_atm),
-                  hint: constant.TRANSACTION_AMOUNT_TEXTFIELD,
-                  isNumericInput: true,
-                ),
+                    key: Key('amount'),
+                    currentCategoryColor: _currentCategoryColor,
+                    textEditingController: amountController,
+                    icon: Icon(Icons.local_atm),
+                    hint: constant.TRANSACTION_AMOUNT_TEXTFIELD,
+                    isNumericInput: true,
+                    displayError: _displayError,),
                 visible: _isInputFieldVisible,
               ),
               Row(
                 children: <Widget>[
                   Visibility(
                     child: DropdownButton(
-                        key: Key('category'),
+                        key: Key('categoryDropdownButton'),
                         value: _categoryInput,
                         onChanged: (Category newvalue) {
                           setState(() {

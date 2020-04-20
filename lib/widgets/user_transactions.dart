@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practice1/widgets/input_transaction.dart';
+import 'input_transaction.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,67 +69,69 @@ class _UserTransactionsState extends State<UserTransactions> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        MyChart(
-          transactions: _recentTransactions,
-        ),
-        InputTransaction(addTx: _addTransactions),
-        _transactions.length == 0
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.only(top: 150),
-                      child: Opacity(
-                        opacity: 0.5,
-                        child: Image(
-                            key: Key('babyMiloImage'),
-                            image: babyMilo,
-                            fit: BoxFit.fill),
-                      )),
-                  Text(
-                    constant.DEFAULT_NO_TRANSACTION_TXT,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: Theme.of(context).primaryColorDark),
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          MyChart(
+            transactions: _recentTransactions,
+          ),
+          InputTransaction(addTx: _addTransactions),
+          _transactions.length == 0
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(top: 150),
+                        child: Opacity(
+                          opacity: 0.5,
+                          child: Image(
+                              key: Key('babyMiloImage'),
+                              image: babyMilo,
+                              fit: BoxFit.fill),
+                        )),
+                    Text(
+                      constant.DEFAULT_NO_TRANSACTION_TXT,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          color: Theme.of(context).primaryColorDark),
+                    ),
+                  ],
+                )
+              : Container(
+                  height: 500,
+                  child: ListView.builder(
+                    itemCount: _transactions.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        key: Key('transaction' + index.toString()),
+                        child: ListTile(
+                          onLongPress: () => showDeleteDialog(context, index),
+                          leading: _transactions[index].iconOfType,
+                          title: Text(
+                            _transactions[index].title.toString(),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            '\$${_transactions[index].amount.toStringAsFixed(2)}',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                          trailing: Text(DateFormat.yMd()
+                              .format(_transactions[index].date)),
+                        ),
+                        elevation: 15,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            side: BorderSide(
+                                color: _transactions[index].colorOfType)),
+                        margin: EdgeInsets.all(10),
+                      );
+                    },
                   ),
-                ],
-              )
-            : Container(
-              height: 500,
-                child: ListView.builder(
-                  itemCount: _transactions.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      key: Key('transaction' + index.toString()),
-                      child: ListTile(
-                        onLongPress: () => showDeleteDialog(context, index),
-                        leading: _transactions[index].iconOfType,
-                        title: Text(
-                          _transactions[index].title.toString(),
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          '\$${_transactions[index].amount.toStringAsFixed(2)}',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                        trailing: Text(
-                            DateFormat.yMd().format(_transactions[index].date)),
-                      ),
-                      elevation: 15,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          side: BorderSide(
-                              color: _transactions[index].colorOfType)),
-                      margin: EdgeInsets.all(10),
-                    );
-                  },
-                ),
-              )
-      ],
+                )
+        ],
+      ),
     );
   }
 }
