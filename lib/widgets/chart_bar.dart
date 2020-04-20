@@ -23,7 +23,7 @@ class ChartBar extends StatelessWidget {
               decoration: BoxDecoration(
                   color: color)),
           FractionallySizedBox(
-            heightFactor: (1 - _spendingMaxPercentage),
+            heightFactor: (1 - _spendingMaxPercentage) == 0 ? double.minPositive : (1 - _spendingMaxPercentage),
             child: Container(
               decoration: BoxDecoration(color: Colors.blueGrey[300]),
             ),

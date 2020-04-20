@@ -23,42 +23,44 @@ class MyChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chartMap = _generateChartBasedOnTransaction();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        ...Category.values.map((ct) {
-          var spentAmountForCategory = chartMap[Transaction.typeToString(ct)];
-          bool exceedLimit = spentAmountForCategory > Transaction.maxSpending;
-          return Column(
-            children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                '\$' + spentAmountForCategory.toStringAsFixed(0),
-                style: TextStyle(
-                    fontWeight:
-                        exceedLimit ? FontWeight.bold : FontWeight.normal,
-                    color:
-                        exceedLimit ? Colors.red[300] : Transaction.typeToColor(ct)),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              ChartBar(
-                color: Transaction.typeToColor(ct),
-                spendingAmount: spentAmountForCategory,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                child: Transaction.typeToIcon(ct, 36),
-              )
-            ],
-          );
-        }).toList()
-      ],
+    return SingleChildScrollView(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          ...Category.values.map((ct) {
+            var spentAmountForCategory = chartMap[Transaction.typeToString(ct)];
+            bool exceedLimit = spentAmountForCategory > Transaction.maxSpending;
+            return Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  '\$' + spentAmountForCategory.toStringAsFixed(0),
+                  style: TextStyle(
+                      fontWeight:
+                          exceedLimit ? FontWeight.bold : FontWeight.normal,
+                      color:
+                          exceedLimit ? Colors.red[300] : Transaction.typeToColor(ct)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ChartBar(
+                  color: Transaction.typeToColor(ct),
+                  spendingAmount: spentAmountForCategory,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  child: Transaction.typeToIcon(ct, 36),
+                )
+              ],
+            );
+          }).toList()
+        ],
+      ),
     );
   }
 }
