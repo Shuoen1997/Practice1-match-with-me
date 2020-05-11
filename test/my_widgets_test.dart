@@ -68,7 +68,6 @@ void main() {
     await tester.tap(find.byKey(Key('addTransactionButton')));
     print('Hello, after add transaction');
     await tester.pumpAndSettle();
-    // expect(tester.takeException(), isInstanceOf<Exception>());
 
 
     //And we should see the first Transaction item

@@ -99,7 +99,7 @@ class _UserTransactionsState extends State<UserTransactions> {
                   ],
                 )
               : Container(
-                  height: 500,
+                  height: MediaQuery.of(context).size.height  * 0.6,
                   child: ListView.builder(
                     itemCount: _transactions.length,
                     itemBuilder: (context, index) {
