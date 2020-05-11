@@ -8,6 +8,6 @@ class MyTextStyle extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Text(txt, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black));
+    return Text(txt, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark));
   }
 }

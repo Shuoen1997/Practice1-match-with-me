@@ -22,7 +22,7 @@ void main() {
 }
 
 ThemeData myMaterialAppTheme() {
-  return ThemeData(brightness: Brightness.dark, primarySwatch: Colors.orange);
+  return ThemeData(brightness: Brightness.light, primarySwatch: Colors.brown);
 }
 
 CupertinoThemeData myCupertioAppTheme() {
@@ -48,7 +48,7 @@ class _MyCoolAppState extends State<MyCoolApp> {
         ? CupertinoNavigationBar(
             backgroundColor: Colors.blueGrey,
             middle: Text(
-              "MY BUDGET APP",
+              "Milo Expense",
               style: TextStyle(color: Colors.white),
             ),
             trailing: Row(
@@ -63,7 +63,7 @@ class _MyCoolAppState extends State<MyCoolApp> {
           )
         : AppBar(
             title: Text(
-            "MY BUDGET APP",
+            "Milo Expense",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ));
     final pageBody = GestureDetector(

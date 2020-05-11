@@ -36,6 +36,13 @@ class _InputTransactionState extends State<InputTransaction> {
     _displayError = false;
   }
 
+  void _clearInputs(){
+    amountController.clear();
+    titleController.clear();
+    _categoryInput = originalCategoryInput;
+    _displayError = false;
+  }
+
   bool isThisInputValid(TextEditingController tec) {
     return tec.text.isNotEmpty;
   }
@@ -76,25 +83,27 @@ class _InputTransactionState extends State<InputTransaction> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Visibility(
-                child: MyTextField(key: Key('title'),
-                    currentCategoryColor: _currentCategoryColor,
-                    textEditingController: titleController,
-                    icon: Icon(Icons.face),
-                    hint: constant.TRANSACTION_TITLE_TEXTFIELD,
-                    isNumericInput: false,
-                    displayError: _displayError,
-                    ),
+                child: MyTextField(
+                  key: Key('title'),
+                  currentCategoryColor: _currentCategoryColor,
+                  textEditingController: titleController,
+                  icon: Icon(Icons.face),
+                  hint: constant.TRANSACTION_TITLE_TEXTFIELD,
+                  isNumericInput: false,
+                  displayError: _displayError,
+                ),
                 visible: _isInputFieldVisible,
               ),
               Visibility(
                 child: MyTextField(
-                    key: Key('amount'),
-                    currentCategoryColor: _currentCategoryColor,
-                    textEditingController: amountController,
-                    icon: Icon(Icons.local_atm),
-                    hint: constant.TRANSACTION_AMOUNT_TEXTFIELD,
-                    isNumericInput: true,
-                    displayError: _displayError,),
+                  key: Key('amount'),
+                  currentCategoryColor: _currentCategoryColor,
+                  textEditingController: amountController,
+                  icon: Icon(Icons.local_atm),
+                  hint: constant.TRANSACTION_AMOUNT_TEXTFIELD,
+                  isNumericInput: true,
+                  displayError: _displayError,
+                ),
                 visible: _isInputFieldVisible,
               ),
               Row(
@@ -149,6 +158,19 @@ class _InputTransactionState extends State<InputTransaction> {
                   // Outline button to match the style of the transaction records
                   child: Row(
                     children: <Widget>[
+                      Visibility(
+                        visible: _isInputFieldVisible,
+                        child: OutlineButton(
+                          key: Key('clearButton'),
+                          child: MyTextStyle('Clear'),
+                          onPressed:() {
+                            setState(() {
+                              _clearInputs();
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 5),
                       Expanded(
                         child: OutlineButton(
                           key: Key('addTransactionButton'),
@@ -169,7 +191,7 @@ class _InputTransactionState extends State<InputTransaction> {
                         ),
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 5,
                       ),
                       Visibility(
                         child: OutlineButton(
