@@ -174,7 +174,7 @@ class _InputTransactionState extends State<InputTransaction> {
                       Expanded(
                         child: OutlineButton(
                           key: Key('addTransactionButton'),
-                          child: MyTextStyle(
+                          child: const MyTextStyle(
                             constant.ADD_TRANSACTION_BUTTON,
                           ),
                           borderSide: _isInputFieldVisible

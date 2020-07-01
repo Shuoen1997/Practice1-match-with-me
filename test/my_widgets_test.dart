@@ -22,12 +22,8 @@ void main() {
     expect(find.byKey(Key('babyMiloImage')), findsOneWidget);
 
     // // We click on Add Transactions button
-    try{
-      await tester.tap(find.byKey(Key('addTransactionButton')));
-      await tester.pumpAndSettle();
-    }catch (e){
-      print(e.toString());
-    }
+    await tester.tap(find.byKey(Key('addTransactionButton')));
+    await tester.pumpAndSettle();
     
     
 
@@ -72,5 +68,14 @@ void main() {
 
     //And we should see the first Transaction item
     expect(find.byType(ListTile), findsOneWidget);
+  });
+
+  testWidgets('TEST 2: Cancel transaction', (WidgetTester tester) async {
+
+    var widgetToBeTested = MaterialApp(home: UserTransactions());
+
+    // Now we pump the widget!
+    await tester.pumpWidget(widgetToBeTested);
+    
   });
 }

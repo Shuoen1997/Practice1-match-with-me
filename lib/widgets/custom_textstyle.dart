@@ -4,7 +4,7 @@ class MyTextStyle extends StatelessWidget {
 
   final String txt;
 
-  MyTextStyle(this.txt);
+  const MyTextStyle(this.txt);
   
   @override
   Widget build(BuildContext context) {
