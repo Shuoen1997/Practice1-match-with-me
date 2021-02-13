@@ -1,0 +1,42 @@
+What I learned in this chapter: 
+
+Widgets:
+- TextField + InputDecoration
+https://api.flutter.dev/flutter/material/TextField-class.html
+https://api.flutter.dev/flutter/material/InputDecoration-class.html
+- TextEditingController
+https://api.flutter.dev/flutter/widgets/TextEditingController-class.html 
+- OutlineButton
+https://api.flutter.dev/flutter/material/OutlineButton-class.html
+- FractionallySizedBox
+https://api.flutter.dev/flutter/widgets/FractionallySizedBox-class.html
+- Stack ( Used to overlay chart bar)
+https://api.flutter.dev/flutter/widgets/Stack-class.html
+- ListTile
+https://api.flutter.dev/flutter/material/ListTile-class.html
+- Image + Opacity 
+https://flutter.dev/docs/development/ui/assets-and-images
+https://api.flutter.dev/flutter/widgets/Opacity-class.html
+- Visibility 
+https://api.flutter.dev/flutter/widgets/Visibility-class.html
+- Expanded 
+https://api.flutter.dev/flutter/widgets/Expanded-class.html
+- Card
+
+
+Dart stuff: 
+- toStringAsFixed
+https://api.dart.dev/stable/2.7.1/dart-core/num/toStringAsFixed.html
+- Map.fromIterable
+https://api.dart.dev/stable/2.7.1/dart-core/Map/Map.fromIterable.html
+- DateFormat
+- the usage of 'where' to extract from a list that satisfy certain condition
+https://api.dart.dev/stable/2.7.1/dart-core/Iterable/where.html
+- Iterable: 
+https://api.dart.dev/stable/2.7.1/dart-core/Iterable-class.html
+
+Flutter how-to: 
+- How to dismiss a widget based on gesture 
+https://flutter.dev/docs/cookbook/gestures/dismissible
+- Theming (The concept of swatch)
+https://flutter.dev/docs/cookbook/design/themes
